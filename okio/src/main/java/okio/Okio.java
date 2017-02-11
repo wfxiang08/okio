@@ -69,12 +69,25 @@ public final class Okio {
     if (timeout == null) throw new IllegalArgumentException("timeout == null");
 
     return new Sink() {
+
       @Override public void write(Buffer source, long byteCount) throws IOException {
+
+
+        source.writeTo(out, byteCount);
+
+
         checkOffsetAndCount(source.size, 0, byteCount);
+
         while (byteCount > 0) {
+          // 定期判断
+          // 需要将这个方法替换掉
           timeout.throwIfReached();
+
           Segment head = source.head;
+
           int toCopy = (int) Math.min(byteCount, head.limit - head.pos);
+
+          // 将数据写入到out中
           out.write(head.data, head.pos, toCopy);
 
           head.pos += toCopy;

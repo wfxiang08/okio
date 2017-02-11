@@ -70,8 +70,11 @@ public class AsyncTimeout extends Timeout {
 
   public final void enter() {
     if (inQueue) throw new IllegalStateException("Unbalanced enter/exit");
+
+    // 时间来自何方呢?
     long timeoutNanos = timeoutNanos();
     boolean hasDeadline = hasDeadline();
+
     if (timeoutNanos == 0 && !hasDeadline) {
       return; // No timeout and no deadline? Don't bother with the queue.
     }
@@ -79,8 +82,8 @@ public class AsyncTimeout extends Timeout {
     scheduleTimeout(this, timeoutNanos, hasDeadline);
   }
 
-  private static synchronized void scheduleTimeout(
-      AsyncTimeout node, long timeoutNanos, boolean hasDeadline) {
+  // 设置当前的Node
+  private static synchronized void scheduleTimeout(AsyncTimeout node, long timeoutNanos, boolean hasDeadline) {
     // Start the watchdog thread and create the head node when the first timeout is scheduled.
     if (head == null) {
       head = new AsyncTimeout();

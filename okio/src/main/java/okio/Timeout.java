@@ -78,6 +78,7 @@ public class Timeout {
    * <p>If {@code timeout == 0}, operations will run indefinitely. (Operating
    * system timeouts may still apply.)
    */
+  // 在什么地方使用呢?
   public Timeout timeout(long timeout, TimeUnit unit) {
     if (timeout < 0) throw new IllegalArgumentException("timeout < 0: " + timeout);
     if (unit == null) throw new IllegalArgumentException("unit == null");
